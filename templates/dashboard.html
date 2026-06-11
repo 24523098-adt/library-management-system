@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head><title>Dashboard Pustakawan</title></head>
+<body>
+<h1>Dashboard Pustakawan</h1>
+<p>Total Peminjaman: {{ total_loans }}</p>
+<p>Terlambat: {{ overdue_loans }}</p>
+<p>Dikembalikan: {{ returned_loans }}</p>
+<h2>Daftar Peminjaman</h2>
+<table border="1">
+<tr><th>Buku</th><th>Peminjam</th><th>Status</th><th>Tenggat</th><th>Aksi</th></tr>
+{% for loan in loans %}
+<tr>
+<td>{{ loan.book.title }}</td>
+<td>{{ loan.user.username }}</td>
+<td>{{ loan.status }}</td>
+<td>{{ loan.due_date }}</td>
+<td>
+{% if loan.status == 'pending' %}
+<a href="/approve/{{ loan.id }}">Approve</a> | <a href="/reject/{{ loan.id }}">Reject</a>
+{% elif loan.status == 'approved' %}
+<a href="/return/{{ loan.id }}">Return</a>
+{% endif %}
+</td>
+</tr>
+{% endfor %}
+</table>
+<a href="/add_book">Tambah Buku</a> | <a href="/">Beranda</a>
+</body>
+</html>
